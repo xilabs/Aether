@@ -15,17 +15,15 @@ using namespace std;
 
 int main () {
 
-	VoxelSpaceManager* space= new VoxelSpaceManager();
+	// Create space
+	SpaceManager* space= (SpaceManager*) new  VoxelSpaceManager();
 
-
-//	Moxel* m=new Moxel();
-//	Vector* v= new Vector(1,2,3);
-//	m->set_position(v);
-
+	// Create a moxel, add it to the space
+	Moxel* m=new Moxel();
+	space->add_moxel(m);
+	
 	// ... //
 	
-//	delete v;
-//	delete m;
 	delete space;
 	
 	

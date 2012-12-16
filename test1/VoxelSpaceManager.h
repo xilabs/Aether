@@ -13,8 +13,7 @@ using namespace std;
  */
 class VoxelSpaceManager : public SpaceManager {
 
-	protected:
-		vector<Moxel*> contents;
+
 		
 	public:
 		VoxelSpaceManager();
