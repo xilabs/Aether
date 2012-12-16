@@ -1,3 +1,7 @@
+#pragma once
+#include "Vector.h"
+
+
 /**
  * Moxel
  *

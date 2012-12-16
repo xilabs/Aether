@@ -1,4 +1,3 @@
-#include "Vector.h"
 #include "Moxel.h"
 
 /**

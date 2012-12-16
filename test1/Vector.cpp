@@ -31,6 +31,7 @@ void Vector::set(double x, double y, double z) {
 	k=z;
 }
 
+
 /**
  * Copies another vector
  *
