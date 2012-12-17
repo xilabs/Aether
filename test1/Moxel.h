@@ -14,8 +14,10 @@ class Moxel {
 	
 	public:
 		Moxel();
+		~Moxel();
+		Moxel(double x, double y, double z);
 		void set_position(Vector* v);
-		
+		Vector* get_position();		
 };
 
 
