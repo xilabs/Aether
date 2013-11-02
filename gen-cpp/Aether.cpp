@@ -169,7 +169,7 @@ uint32_t Aether_get_moxel_snapshot_presult::read(::apache::thrift::protocol::TPr
   return xfer;
 }
 
-void AetherClient::get_moxel_snapshot(Space& _return)
+void AetherClient::get_moxel_snapshot(MoxelSpace& _return)
 {
   send_get_moxel_snapshot();
   recv_get_moxel_snapshot(_return);
@@ -188,7 +188,7 @@ void AetherClient::send_get_moxel_snapshot()
   oprot_->getTransport()->flush();
 }
 
-void AetherClient::recv_get_moxel_snapshot(Space& _return)
+void AetherClient::recv_get_moxel_snapshot(MoxelSpace& _return)
 {
 
   int32_t rseqid = 0;

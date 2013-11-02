@@ -15,7 +15,7 @@
 class AetherIf {
  public:
   virtual ~AetherIf() {}
-  virtual void get_moxel_snapshot(Space& _return) = 0;
+  virtual void get_moxel_snapshot(MoxelSpace& _return) = 0;
 };
 
 class AetherIfFactory {
@@ -45,7 +45,7 @@ class AetherIfSingletonFactory : virtual public AetherIfFactory {
 class AetherNull : virtual public AetherIf {
  public:
   virtual ~AetherNull() {}
-  void get_moxel_snapshot(Space& /* _return */) {
+  void get_moxel_snapshot(MoxelSpace& /* _return */) {
     return;
   }
 };
@@ -101,12 +101,12 @@ class Aether_get_moxel_snapshot_result {
 
   virtual ~Aether_get_moxel_snapshot_result() throw() {}
 
-  Space success;
+  MoxelSpace success;
   ServiceUnavailable sunav;
 
   _Aether_get_moxel_snapshot_result__isset __isset;
 
-  void __set_success(const Space& val) {
+  void __set_success(const MoxelSpace& val) {
     success = val;
   }
 
@@ -145,7 +145,7 @@ class Aether_get_moxel_snapshot_presult {
 
   virtual ~Aether_get_moxel_snapshot_presult() throw() {}
 
-  Space* success;
+  MoxelSpace* success;
   ServiceUnavailable sunav;
 
   _Aether_get_moxel_snapshot_presult__isset __isset;
@@ -174,9 +174,9 @@ class AetherClient : virtual public AetherIf {
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void get_moxel_snapshot(Space& _return);
+  void get_moxel_snapshot(MoxelSpace& _return);
   void send_get_moxel_snapshot();
-  void recv_get_moxel_snapshot(Space& _return);
+  void recv_get_moxel_snapshot(MoxelSpace& _return);
  protected:
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -225,7 +225,7 @@ class AetherMultiface : virtual public AetherIf {
     ifaces_.push_back(iface);
   }
  public:
-  void get_moxel_snapshot(Space& _return) {
+  void get_moxel_snapshot(MoxelSpace& _return) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {

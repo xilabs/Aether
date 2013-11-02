@@ -20,7 +20,7 @@ class AetherHandler : virtual public AetherIf {
     // Your initialization goes here
   }
 
-  void get_moxel_snapshot(Space& _return) {
+  void get_moxel_snapshot(MoxelSpace& _return) {
     // Your implementation goes here
     printf("get_moxel_snapshot\n");
   }

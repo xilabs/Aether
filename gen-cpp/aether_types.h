@@ -68,29 +68,29 @@ class ServiceUnavailable : public ::apache::thrift::TException {
 
 void swap(ServiceUnavailable &a, ServiceUnavailable &b);
 
-typedef struct _Vector__isset {
-  _Vector__isset() : x(false), y(false), z(false) {}
+typedef struct _MoxelRepresentation__isset {
+  _MoxelRepresentation__isset() : x(false), y(false), z(false) {}
   bool x;
   bool y;
   bool z;
-} _Vector__isset;
+} _MoxelRepresentation__isset;
 
-class Vector {
+class MoxelRepresentation {
  public:
 
   static const char* ascii_fingerprint; // = "EFFAD640FBA2CA56C50155B2A4545897";
   static const uint8_t binary_fingerprint[16]; // = {0xEF,0xFA,0xD6,0x40,0xFB,0xA2,0xCA,0x56,0xC5,0x01,0x55,0xB2,0xA4,0x54,0x58,0x97};
 
-  Vector() : x(0), y(0), z(0) {
+  MoxelRepresentation() : x(0), y(0), z(0) {
   }
 
-  virtual ~Vector() throw() {}
+  virtual ~MoxelRepresentation() throw() {}
 
   double x;
   double y;
   double z;
 
-  _Vector__isset __isset;
+  _MoxelRepresentation__isset __isset;
 
   void __set_x(const double val) {
     x = val;
@@ -104,7 +104,7 @@ class Vector {
     z = val;
   }
 
-  bool operator == (const Vector & rhs) const
+  bool operator == (const MoxelRepresentation & rhs) const
   {
     if (!(x == rhs.x))
       return false;
@@ -114,104 +114,61 @@ class Vector {
       return false;
     return true;
   }
-  bool operator != (const Vector &rhs) const {
+  bool operator != (const MoxelRepresentation &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Vector & ) const;
+  bool operator < (const MoxelRepresentation & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-void swap(Vector &a, Vector &b);
+void swap(MoxelRepresentation &a, MoxelRepresentation &b);
 
-typedef struct _Moxel__isset {
-  _Moxel__isset() : position(false) {}
-  bool position;
-} _Moxel__isset;
-
-class Moxel {
- public:
-
-  static const char* ascii_fingerprint; // = "4FE4B4C8952003BE2B266957AF72F8B4";
-  static const uint8_t binary_fingerprint[16]; // = {0x4F,0xE4,0xB4,0xC8,0x95,0x20,0x03,0xBE,0x2B,0x26,0x69,0x57,0xAF,0x72,0xF8,0xB4};
-
-  Moxel() {
-  }
-
-  virtual ~Moxel() throw() {}
-
-  Vector position;
-
-  _Moxel__isset __isset;
-
-  void __set_position(const Vector& val) {
-    position = val;
-  }
-
-  bool operator == (const Moxel & rhs) const
-  {
-    if (!(position == rhs.position))
-      return false;
-    return true;
-  }
-  bool operator != (const Moxel &rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const Moxel & ) const;
-
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-void swap(Moxel &a, Moxel &b);
-
-typedef struct _Space__isset {
-  _Space__isset() : moxels(false) {}
+typedef struct _MoxelSpace__isset {
+  _MoxelSpace__isset() : moxels(false) {}
   bool moxels;
-} _Space__isset;
+} _MoxelSpace__isset;
 
-class Space {
+class MoxelSpace {
  public:
 
-  static const char* ascii_fingerprint; // = "25A3CDDFF8FCED7F1C79B8F32C3AAAD9";
-  static const uint8_t binary_fingerprint[16]; // = {0x25,0xA3,0xCD,0xDF,0xF8,0xFC,0xED,0x7F,0x1C,0x79,0xB8,0xF3,0x2C,0x3A,0xAA,0xD9};
+  static const char* ascii_fingerprint; // = "CA3A04F6586943FB009547C6AECE5B89";
+  static const uint8_t binary_fingerprint[16]; // = {0xCA,0x3A,0x04,0xF6,0x58,0x69,0x43,0xFB,0x00,0x95,0x47,0xC6,0xAE,0xCE,0x5B,0x89};
 
-  Space() {
+  MoxelSpace() {
   }
 
-  virtual ~Space() throw() {}
+  virtual ~MoxelSpace() throw() {}
 
-  std::vector<Moxel>  moxels;
+  std::vector<MoxelRepresentation>  moxels;
 
-  _Space__isset __isset;
+  _MoxelSpace__isset __isset;
 
-  void __set_moxels(const std::vector<Moxel> & val) {
+  void __set_moxels(const std::vector<MoxelRepresentation> & val) {
     moxels = val;
   }
 
-  bool operator == (const Space & rhs) const
+  bool operator == (const MoxelSpace & rhs) const
   {
     if (!(moxels == rhs.moxels))
       return false;
     return true;
   }
-  bool operator != (const Space &rhs) const {
+  bool operator != (const MoxelSpace &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const Space & ) const;
+  bool operator < (const MoxelSpace & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-void swap(Space &a, Space &b);
+void swap(MoxelSpace &a, MoxelSpace &b);
 
 
 

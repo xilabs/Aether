@@ -72,7 +72,7 @@ ServiceUnavailable.prototype.write = function(output) {
   return;
 };
 
-Vector = function(args) {
+MoxelRepresentation = function(args) {
   this.x = null;
   this.y = null;
   this.z = null;
@@ -88,8 +88,8 @@ Vector = function(args) {
     }
   }
 };
-Vector.prototype = {};
-Vector.prototype.read = function(input) {
+MoxelRepresentation.prototype = {};
+MoxelRepresentation.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -132,8 +132,8 @@ Vector.prototype.read = function(input) {
   return;
 };
 
-Vector.prototype.write = function(output) {
-  output.writeStructBegin('Vector');
+MoxelRepresentation.prototype.write = function(output) {
+  output.writeStructBegin('MoxelRepresentation');
   if (this.x !== null && this.x !== undefined) {
     output.writeFieldBegin('x', Thrift.Type.DOUBLE, 1);
     output.writeDouble(this.x);
@@ -154,61 +154,7 @@ Vector.prototype.write = function(output) {
   return;
 };
 
-Moxel = function(args) {
-  this.position = null;
-  if (args) {
-    if (args.position !== undefined) {
-      this.position = args.position;
-    }
-  }
-};
-Moxel.prototype = {};
-Moxel.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.position = new Vector();
-        this.position.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-Moxel.prototype.write = function(output) {
-  output.writeStructBegin('Moxel');
-  if (this.position !== null && this.position !== undefined) {
-    output.writeFieldBegin('position', Thrift.Type.STRUCT, 1);
-    this.position.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-Space = function(args) {
+MoxelSpace = function(args) {
   this.moxels = null;
   if (args) {
     if (args.moxels !== undefined) {
@@ -216,8 +162,8 @@ Space = function(args) {
     }
   }
 };
-Space.prototype = {};
-Space.prototype.read = function(input) {
+MoxelSpace.prototype = {};
+MoxelSpace.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -242,7 +188,7 @@ Space.prototype.read = function(input) {
         for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
           var elem6 = null;
-          elem6 = new Moxel();
+          elem6 = new MoxelRepresentation();
           elem6.read(input);
           this.moxels.push(elem6);
         }
@@ -263,8 +209,8 @@ Space.prototype.read = function(input) {
   return;
 };
 
-Space.prototype.write = function(output) {
-  output.writeStructBegin('Space');
+MoxelSpace.prototype.write = function(output) {
+  output.writeStructBegin('MoxelSpace');
   if (this.moxels !== null && this.moxels !== undefined) {
     output.writeFieldBegin('moxels', Thrift.Type.LIST, 1);
     output.writeListBegin(Thrift.Type.STRUCT, this.moxels.length);

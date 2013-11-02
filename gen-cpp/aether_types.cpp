@@ -85,10 +85,10 @@ void swap(ServiceUnavailable &a, ServiceUnavailable &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Vector::ascii_fingerprint = "EFFAD640FBA2CA56C50155B2A4545897";
-const uint8_t Vector::binary_fingerprint[16] = {0xEF,0xFA,0xD6,0x40,0xFB,0xA2,0xCA,0x56,0xC5,0x01,0x55,0xB2,0xA4,0x54,0x58,0x97};
+const char* MoxelRepresentation::ascii_fingerprint = "EFFAD640FBA2CA56C50155B2A4545897";
+const uint8_t MoxelRepresentation::binary_fingerprint[16] = {0xEF,0xFA,0xD6,0x40,0xFB,0xA2,0xCA,0x56,0xC5,0x01,0x55,0xB2,0xA4,0x54,0x58,0x97};
 
-uint32_t Vector::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t MoxelRepresentation::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -144,9 +144,9 @@ uint32_t Vector::read(::apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-uint32_t Vector::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t MoxelRepresentation::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Vector");
+  xfer += oprot->writeStructBegin("MoxelRepresentation");
 
   xfer += oprot->writeFieldBegin("x", ::apache::thrift::protocol::T_DOUBLE, 1);
   xfer += oprot->writeDouble(this->x);
@@ -165,7 +165,7 @@ uint32_t Vector::write(::apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-void swap(Vector &a, Vector &b) {
+void swap(MoxelRepresentation &a, MoxelRepresentation &b) {
   using ::std::swap;
   swap(a.x, b.x);
   swap(a.y, b.y);
@@ -173,72 +173,10 @@ void swap(Vector &a, Vector &b) {
   swap(a.__isset, b.__isset);
 }
 
-const char* Moxel::ascii_fingerprint = "4FE4B4C8952003BE2B266957AF72F8B4";
-const uint8_t Moxel::binary_fingerprint[16] = {0x4F,0xE4,0xB4,0xC8,0x95,0x20,0x03,0xBE,0x2B,0x26,0x69,0x57,0xAF,0x72,0xF8,0xB4};
+const char* MoxelSpace::ascii_fingerprint = "CA3A04F6586943FB009547C6AECE5B89";
+const uint8_t MoxelSpace::binary_fingerprint[16] = {0xCA,0x3A,0x04,0xF6,0x58,0x69,0x43,0xFB,0x00,0x95,0x47,0xC6,0xAE,0xCE,0x5B,0x89};
 
-uint32_t Moxel::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->position.read(iprot);
-          this->__isset.position = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Moxel::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Moxel");
-
-  xfer += oprot->writeFieldBegin("position", ::apache::thrift::protocol::T_STRUCT, 1);
-  xfer += this->position.write(oprot);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-void swap(Moxel &a, Moxel &b) {
-  using ::std::swap;
-  swap(a.position, b.position);
-  swap(a.__isset, b.__isset);
-}
-
-const char* Space::ascii_fingerprint = "25A3CDDFF8FCED7F1C79B8F32C3AAAD9";
-const uint8_t Space::binary_fingerprint[16] = {0x25,0xA3,0xCD,0xDF,0xF8,0xFC,0xED,0x7F,0x1C,0x79,0xB8,0xF3,0x2C,0x3A,0xAA,0xD9};
-
-uint32_t Space::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t MoxelSpace::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -290,14 +228,14 @@ uint32_t Space::read(::apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-uint32_t Space::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t MoxelSpace::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Space");
+  xfer += oprot->writeStructBegin("MoxelSpace");
 
   xfer += oprot->writeFieldBegin("moxels", ::apache::thrift::protocol::T_LIST, 1);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->moxels.size()));
-    std::vector<Moxel> ::const_iterator _iter5;
+    std::vector<MoxelRepresentation> ::const_iterator _iter5;
     for (_iter5 = this->moxels.begin(); _iter5 != this->moxels.end(); ++_iter5)
     {
       xfer += (*_iter5).write(oprot);
@@ -311,7 +249,7 @@ uint32_t Space::write(::apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-void swap(Space &a, Space &b) {
+void swap(MoxelSpace &a, MoxelSpace &b) {
   using ::std::swap;
   swap(a.moxels, b.moxels);
   swap(a.__isset, b.__isset);

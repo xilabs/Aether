@@ -67,7 +67,7 @@ Aether_get_moxel_snapshot_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.STRUCT) {
-        this.success = new Space();
+        this.success = new MoxelSpace();
         this.success.read(input);
       } else {
         input.skip(ftype);
