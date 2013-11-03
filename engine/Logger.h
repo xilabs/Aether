@@ -32,7 +32,6 @@ public:
 		if(log_to_syslog) {
 
 			// Close syslog
-			this->notice("Closing log");
 			mutex::scoped_lock lock(this->guard);
 			closelog();
 		}
@@ -44,7 +43,7 @@ public:
 		mutex::scoped_lock lock(this->guard);
 		openlog(this->name.c_str(),0,LOG_DAEMON);
 		log_to_syslog=true;
-		
+
 	};
 
 	void notice(string message) {

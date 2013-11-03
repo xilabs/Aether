@@ -25,6 +25,7 @@ bool daemonized=false;
 shared_ptr<Universe> universe;
 shared_ptr<Logger> logger;
 shared_ptr<Configuration> config;
+shared_ptr<ServiceManager> service_manager;
 
 int main(int argc, char **argv) {
 
@@ -82,14 +83,15 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	logger->notice("starting universe");
 	try {
 
 		// Launch the universe
+		universe=shared_ptr<Universe>(new Universe());
+		logger->notice("universe started successfully");
 
-	    // WebsocketServer server;
-	    // server.run(9002);
-
+		// Launch the service manager
+		service_manager=shared_ptr<ServiceManager>(new ServiceManager());
+		service_manager->run();		// Will block forever
 
 	} catch (exception& e){
 
@@ -119,6 +121,10 @@ void signal_handler(int signum){
 	if(signum==SIGTERM || signum==SIGINT){
 
 		logger->notice("caught signal. Closing...");
+		if(service_manager){
+
+			service_manager->stop();
+		}
 	 }
 
 }
