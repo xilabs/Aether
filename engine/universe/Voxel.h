@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../Eigen/Dense"
+#include "Eigen/Dense"
 #include <boost/shared_ptr.hpp>
 #include <deque>
 #include <vector>
 #include <boost/thread/mutex.hpp>
 #include "Moxel.h"
 #include "MoxelManager.h"
-#include "../gen-cpp/Aether.h"			// Should not be here!!!!! We should be ignorant of this!
+//#include "../gen-cpp/Aether.h"			// Should not be here!!!!! We should be ignorant of this!
 using namespace std;
 using namespace Eigen;
 using boost::shared_ptr;
@@ -39,6 +39,7 @@ public:
 	 * TODO - this function should not exist - Voxels should not be aware of how they are viewed!
 	 * we really need to implement some kind of view connector class!
 	 */
+	 /*
 	vector<MoxelRepresentation> get_moxel_representations() {
 
 		// A place for some results
@@ -63,7 +64,7 @@ public:
 
 		return result;
 	};
-
+*/
 
 private:
 
