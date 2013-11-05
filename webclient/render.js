@@ -9,7 +9,6 @@ function Portal(universe) {
     this.i = 0;
     this.canvas = document.body.appendChild( this.renderer.domElement );
     this.canvas.id = "portal";
-     
     this.camera.position.z = 50;
     
     this.populateView = function() {
