@@ -8,6 +8,7 @@ Services allow us to communicate with the moxel universe.  Currently, only webso
 For *binary data* coming across the websocket: we essentially ferry groups of objects across the wire.  Here is what an object group looks like:
 
 C++ Type		|		JS Type			|		Bytes		|		Name			|		Description
+----------------|-----------------------|-------------------|-----------------------|-----------------------
 unsinged int	|	 Uint32				|		4			|	object_type_id		|	object type ID
 unsigned int	|	 Uint32				|		4			|	xheader_length		|	length of extra header
 unsinged int	|	 Uint32				|		4			|	object_size			|	size of 1 object (padded to dword boundary)
@@ -18,6 +19,7 @@ unsigned char	|	ArrayBuffer			|					|	objects				|	objects
 And here are the object types:
 
 Object type ID	|	Object
+----------------|-----------
 1000			|	Moxel
 1001			|	Banana
 1002			|	Pear
