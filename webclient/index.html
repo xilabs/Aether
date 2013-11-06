@@ -77,18 +77,12 @@
                 ws.binaryType="arraybuffer";
                 
                 ws.onmessage = function (e) {
-                                $("#results").html("Received:");
-				// Process incoming data
                                 
 				var objects=process_aether_data(e.data);
-                                
-				// Print what we have
+
 				
 				for(var n=0; n<objects.length; n++){
-                                        if (happy) {
-                                            alert(objects[1]);
-                                            happy=false;
-                                        }
+                                        
                                         if (n < u.moxels.length) {
                                             
                                             u.moxels[n].position = objects[n];
@@ -100,7 +94,6 @@
                                         
 				}
                                 
-				$("#results").append("<br />");
 		}
                 
                 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -143,7 +136,7 @@
             <input type="submit" value="update" id="update">
         </form>
         <div id="results">
-            hmmm
+            
         </div>
     </body> 
 </html>
