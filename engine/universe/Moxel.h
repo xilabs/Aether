@@ -21,6 +21,8 @@ public:
 		this->bonds.push_back(brother);		/* TODO - make sure we don't do this twice for the same brother! */
 	};
 
+
+
 	Vector3f position;
 	Vector3f velocity;
 	deque<shared_ptr<Moxel> > bonds;

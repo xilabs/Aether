@@ -32,51 +32,58 @@ Suppose we send a group of moxels to the client.   The message could be decoded 
 
 ```js
 
-// A Moxel might be defined like this:
-function Moxel(){};
-Moxel.prototype=object_type_id=1000;
-Moxel.prototype.from_arraybuffer=function(buff){
-	
-	var _data=new Float64Array(buff);
-	this.x=_data[0];
-	this.y=_data[1];
-	this.z=_data[2];
-};
+    /**
+     * Moxel object
+     *
+     */
+    function Moxel(){};
+    Moxel.prototype.object_type_id=1000;
+    Moxel.prototype.to_string=function(){
 
+        return "Moxel("+this.x+","+this.y+","+this.z+")";
+    };
+    Moxel.prototype.from_arraybuffer=function(buff){
+        
+        var dv = new DataView(buff);
+        this.x=dv.getFloat64(0,true);
+        this.y=dv.getFloat64(8,true);
+        this.z=dv.getFloat64(16,true);
+    };
 
-// Create socket
-var ws = new WebSocket("ws://aether.xilabs.net:9002");
-ws.binaryType="arraybuffer";
-ws.onmessage = function (e) {
+    /**
+     * Read Aether data, convert to usable objects
+     *
+     * @param buff arraybuffer of incoming data
+     * @retval an array of native objects of the appropriate type (moxel, etc)
+     */
+    function process_aether_data(buff){
 
-	// Read incoming data per Aether binary spec
-    var dv = new DataView(e.data);
-    var offset=0;
+        // Read incoming data per Aether binary spec
+        var dv = new DataView(buff);
+        var offset=0;
 
-    // Header data
-    var object_type=dv.getUint32(offset);
-    var xheader_length=dv.getUint32(offset+=4);
-    var object_size=dv.getUint32(offset+=4);
-    var object_count=dv.getUint32(offset+=4);
-    var xheader=new Uint8Array(e.data,offset+=4, xheader_length);
-    var objects=[object_count];
+        // Header data
+        var object_type=dv.getUint32(offset, true);
+        var xheader_length=dv.getUint32(offset+=4, true);
+        var object_size=dv.getUint32(offset+=4, true);
+        var object_count=dv.getUint32(offset+=4, true);
+        var xheader=new Uint8Array(buff,offset+=4, xheader_length);
+        var objects=new Array(object_count);
 
-    // Reconstitute objects
-    if(object_type_id != Moxel.prototype.object_type_id) {
+        // Reconstitute objects
+        if(object_type != Moxel.prototype.object_type_id) {
 
-    	throw "Unknown object type received";
-    }
-    offset+=xheader_length;
-    for(var n=0; n<object_count; n++){
+            throw "Unknown object type received";
+        }
+        offset+=xheader_length;
+        for(var n=0; n<object_count; n++){
 
-    	var m=new Moxel();
-    	m.from_arraybuffer(e.data.slice(offset, offset+=object_size));
-    	objects[object_count]=m;
-    }
-
-    // Do something with the new moxels contained in objects[]
-}
-
+            var m=new Moxel();
+            m.from_arraybuffer(buff.slice(offset, offset+=object_size));
+            objects[n]=m;
+        }
+        return objects;
+    };
 
 ```
 

@@ -35,6 +35,7 @@ public:
 
 	};
 
+
 	/* 
 	 * TODO - this function should not exist - Voxels should not be aware of how they are viewed!
 	 * we really need to implement some kind of view connector class!
@@ -65,13 +66,13 @@ public:
 		return result;
 	};
 */
+	deque<shared_ptr<Moxel> > moxels;		
+	mutex guard;
 
 private:
 
 	MoxelManager moxel_manager;
-	mutex guard;
 	Vector3f position;
 	Vector3f velocity;
-	deque<shared_ptr<Moxel> > moxels;
 
 };
