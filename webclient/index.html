@@ -17,19 +17,100 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="jquery.mousewheel.js" type="text/javascript"></script>
         <script>
+            
+            function from_arraybuffer(buff){
+  
+                var position = new Array;
+    
+                var dv = new DataView(buff);
+                
+                position[0] = dv.getFloat64(0,true);
+                position[1] = dv.getFloat64(8,true);
+                position[2] = dv.getFloat64(16,true);
+                
+                return position;
+                 
+            }
+            
+            var u = new Universe();
+            u.objectTypes = [1000];
+            var happy=true;
+            function Happy () {
+                this.prototype.happy;
+            }
+            Happy.prototype.lala = "";
+            function process_aether_data(buff){
+                
+		// Read incoming data per Aether binary spec
+		var dv = new DataView(buff);
+		var offset=0;
+
+		// Header data
+		var object_type=dv.getUint32(offset, true);
+		var xheader_length=dv.getUint32(offset+=4, true);
+		var object_size=dv.getUint32(offset+=4, true);
+		var object_count=dv.getUint32(offset+=4, true);
+		var xheader=new Uint8Array(buff,offset+=4, xheader_length);
+		var objects=new Array(object_count);
+                
+		// Reconstitute objects
+		if(object_type != u.objectTypes) {
+
+			throw "Unknown object type received";
+		}
+                
+		offset+=xheader_length;
+                
+		for(var n=0; n<object_count; n++){
+                        
+			var b = from_arraybuffer(buff.slice(offset, offset+=object_size));
+                       
+			objects[n]=b;       
+                        
+		}
+                
+		return objects;
+	};
             $(document).ready(function(){
+                var ws;
+                ws = new WebSocket("ws://aether.xilabs.net:9002");
+                ws.binaryType="arraybuffer";
+                
+                ws.onmessage = function (e) {
+                                $("#results").html("Received:");
+				// Process incoming data
+                                
+				var objects=process_aether_data(e.data);
+                                
+				// Print what we have
+				
+				for(var n=0; n<objects.length; n++){
+                                        if (happy) {
+                                            alert(objects[1]);
+                                            happy=false;
+                                        }
+                                        if (n < u.moxels.length) {
+                                            
+                                            u.moxels[n].position = objects[n];
+                                            
+                                        } else {
+                                            u.createMoxel(objects[n], 5);
+                                            portal.populateView(n);
+                                        }
+                                        
+				}
+                                
+				$("#results").append("<br />");
+		}
                 
                 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
                 
-                var u = new Universe();
-                
                 var moxel1 = u.createMoxel([1,1,0],5);
-                var moxel2 = u.createMoxel([15,1,0],5);
                 
                 var portal = new Portal(u);
                 
-                portal.populateView();
-                var controls = new THREE.OrbitControls( portal.camera );
+                portal.populateView(0);
+                var controls = new THREE.OrbitControls( portal.camera, portal.canvas );
                 //controls.addEventListener( 'change', render );
                 
                 render = function() {
@@ -41,12 +122,12 @@
                 
                 render();
                 
-                $("#xpos").val(moxel1.position[0]);
-                $("#ypos").val(moxel1.position[0]);
+                $("#xpos").val(moxel2.position[0]);
+                $("#ypos").val(moxel2.position[0]);
                 
                 $("#update").click(function() {
-                    moxel1.position[0] = $("#xpos").val();
-                    moxel1.position[1] = $("#ypos").val();
+                    moxel2.position[0] = $("#xpos").val();
+                    moxel2.position[1] = $("#ypos").val();
                     return false;
                 });
                 
@@ -61,5 +142,8 @@
             ypos <input type="text" id="ypos" size="3">
             <input type="submit" value="update" id="update">
         </form>
+        <div id="results">
+            hmmm
+        </div>
     </body> 
 </html>
