@@ -5,7 +5,10 @@
 #include "MoxelManager.h"
 #include "Eigen/Dense"
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/detail/atomic_count.hpp>
+
 #include <deque>
 #include <cstdlib>
 #include <cstring>
@@ -13,6 +16,8 @@ using boost::mutex;
 using namespace std;
 using namespace Eigen;
 using boost::shared_ptr;
+using boost::detail::atomic_count;
+
 
 extern shared_ptr<Logger> logger;
 
@@ -21,7 +26,6 @@ class MoxelMessage {
 public:
 	MoxelMessage(shared_ptr<Voxel> voxel){				// TODO - this is unsafe without locking moxels to the voxel's deque!
 
-		logger->notice("MM CREATE");
 		// Lock the voxel
 		mutex::scoped_lock lock(voxel->guard);
 
@@ -63,7 +67,6 @@ public:
 	};
 	~MoxelMessage() {
 
-		logger->notice("MM DEST");
 		free(this->blob);
 	};
 	size_t moxel_count;
@@ -77,7 +80,16 @@ class Universe {
 public:
 	Universe();
 
+	void run();
+	void stop();
+	void manage();
+
 	// Start with 1 voxel! :)
 	shared_ptr<Voxel> voxel;
+
+protected:
+	shared_ptr<boost::thread>manager;
+	shared_ptr<atomic_count>manager_run;
+
 
 };

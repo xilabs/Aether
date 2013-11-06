@@ -26,6 +26,12 @@ class WebsocketServer {
 
 public:
     WebsocketServer() {
+
+        // Logging
+//        server.set_access_channels(websocketpp::log::alevel::all);
+//        server.clear_access_channels(websocketpp::log::alevel::frame_payload);
+        server.clear_access_channels(websocketpp::log::alevel::all);
+
         server.init_asio();
                 
         server.set_open_handler(bind(&WebsocketServer::on_open,this,::_1));
@@ -52,10 +58,6 @@ public:
 
     void broadcast_payload(void* payload, size_t len){
 
-        // std::stringstream s;
-        // s << "message is " << len << "bytes";
-        // logger->notice(s.str());
-
         // Create a message
         message_type::ptr msg = this->manager->get_message(websocketpp::frame::opcode::BINARY,len);
         msg->set_payload((const void*)payload, len);
@@ -64,7 +66,6 @@ public:
         // Send to all connections
         for(con_list::iterator it=m_connections.begin(); it!=m_connections.end(); ++it){
             
-            logger->notice("Broadcasting moxels to connection");
            server.send(*it, msg);         
         }
 

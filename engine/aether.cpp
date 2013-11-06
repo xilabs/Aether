@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
 
 		// Launch the universe
 		universe=shared_ptr<Universe>(new Universe());
+		universe->run();
 		logger->notice("universe started successfully");
 
 		// Launch the service manager
@@ -123,6 +124,7 @@ void signal_handler(int signum){
 		logger->notice("caught signal. Closing...");
 		if(service_manager){
 
+			universe->stop();
 			service_manager->stop();
 		}
 	 }
