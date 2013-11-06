@@ -1,0 +1,3 @@
+engine/*.o
+engine/inih/cpp/*.o
+.DS_Store
