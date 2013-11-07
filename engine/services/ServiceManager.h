@@ -71,7 +71,7 @@ protected:
 			try {
 
 				// Snooze a little
-				boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+				boost::this_thread::sleep(boost::posix_time::milliseconds(50));
 				this->send_moxel_message();
 
 			} catch(boost::thread_interrupted& e) {
