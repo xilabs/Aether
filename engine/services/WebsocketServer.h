@@ -51,9 +51,14 @@ public:
     
     void on_message(connection_hdl hdl, server_t::message_ptr msg) {
 
+        // Only accept text messages
         if(msg->get_opcode()==websocketpp::frame::opcode::BINARY)
             return;
 
+        // Log the message
+        logger->notice(msg->get_payload());
+
+        // Broadcast it
         for(con_list::iterator it=m_connections.begin(); it!=m_connections.end(); ++it){
             server.send(*it,msg);
         }
