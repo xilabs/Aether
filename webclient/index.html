@@ -83,7 +83,7 @@
                 ws.onmessage = function (e) {
                                 
 				var objects=process_aether_data(e.data);
-
+                                if (e.data)
 				
 				for(var n=0; n<objects.length; n++){
                                         
@@ -136,7 +136,7 @@
                     }
                 });
                 $("#cmdForm").submit(function() {
-                    ws.send($("#cmdLine").val(""));
+                    ws.send($("#cmdLine").val());
                     $("#cmdLine").val("");
                     return false;
                 });
