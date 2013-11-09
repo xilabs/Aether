@@ -1,6 +1,7 @@
 #include "Universe.h"
 #include <cmath>
-
+#include <boost/random.hpp>
+#include <boost/generator_iterator.hpp>
 #define PI 3.14159265
 
 Universe::Universe() {
@@ -24,6 +25,19 @@ Universe::Universe() {
 	// Add bonds: m2<->m3
 	m2->bind(m3);
 	m3->bind(m2);
+
+
+	// Now generate 97 more random moxels
+
+	boost::mt19937 rng;
+	boost::uniform_int<> dist(-200,200);
+	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > die(rng, dist);
+	for (int n=0; n<97; n++){
+
+		shared_ptr<Moxel> m=shared_ptr<Moxel>(new Moxel(Vector3f(die(),die(),die())));
+		voxel->add_moxel(m);
+
+	}
 
 
 };
