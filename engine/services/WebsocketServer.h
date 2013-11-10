@@ -36,7 +36,7 @@ public:
                 
         server.set_open_handler(bind(&WebsocketServer::on_open,this,::_1));
         server.set_close_handler(bind(&WebsocketServer::on_close,this,::_1));
-//        server.set_message_handler(bind(&WebsocketServer::on_message,this,::_1,::_2));
+        server.set_message_handler(bind(&WebsocketServer::on_message,this,::_1,::_2));
 
           this->manager=con_msg_man_type::ptr(new con_msg_man_type());
     }
@@ -49,12 +49,20 @@ public:
         m_connections.erase(hdl);
     }
     
-    // void on_message(connection_hdl hdl, server_t::message_ptr msg) {
-    //     //for (auto it : m_connections) {
-    //     for(con_list::iterator it=m_connections.begin(); it!=m_connections.end(); ++it){
-    //         server.send(*it,msg);
-    //     }
-    // }
+    void on_message(connection_hdl hdl, server_t::message_ptr msg) {
+
+        // Only accept text messages
+        if(msg->get_opcode()==websocketpp::frame::opcode::BINARY)
+            return;
+
+        // Log the message
+        logger->notice(msg->get_payload());
+
+        // Broadcast it
+        for(con_list::iterator it=m_connections.begin(); it!=m_connections.end(); ++it){
+            server.send(*it,msg);
+        }
+    }
 
     void broadcast_payload(void* payload, size_t len){
 
