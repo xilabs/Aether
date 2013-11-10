@@ -3,6 +3,7 @@ function Portal(universe) {
     this.u = universe;
     this.v = new View();
     this.scene = new THREE.Scene();
+	this.cmd = new CmdModule();
 	this.commLink = new CommLink(this);
     this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.005);
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); 
@@ -12,7 +13,6 @@ function Portal(universe) {
     this.i = 0;
     this.canvas = document.body.appendChild( this.renderer.domElement );
     this.canvas.id = "portal";
-	this.cmd = new CmdModule(this);
     this.camera.position.z = 50;
     this.happy;
     this.projector = new THREE.Projector();
@@ -95,12 +95,6 @@ function Portal(universe) {
         }
     };
 	
-	this.updateCommLink = function(url, portal) {
-		portal.commLink.url = url;
-		//u.moxels.splice(0);
-		portal.commLink.init(portal.commLink);
-	}
-	
 	this.init = function(portal) {
 	
 		$("#portal").click(function() {
@@ -116,72 +110,12 @@ function View() {
     this.objects = new Array();
 }
 
-function CmdModule(portal) {
-	this.skeleton = "<div id='cmd'><form id='cmdForm'><input type='text' id='cmdLine'><input type='submit' value='Send'></form><div id='cmdResponse'></div></div>";
+function CmdModule() {
+	this.skeleton;
 	this.cmdActive = false;
-	this.responses = new Array();
-	this.responsesLimit = 3;
-	this.portal = portal;
 	
-	this.processCmd = function(cmd, cmdModule) {
-		var parsedCmd = cmd.split(" ");
-		var target = parsedCmd[0];
-		var validTargets = ["/client", "/help"];
-		
-		if (validTargets.indexOf(target) != -1) {
-			if (target == "/client") {
-				cmdModule.processClientCmd(cmd, cmdModule);
-			} else if (target == "/help") {
-				cmdModule.updateResponse("Please use one of the following targets:<br>/client</br>/server", cmdModule);
-			}
-		} else {
-			cmdModule.portal.commLink.sendMessage(cmd, cmdModule.portal.commLink);
-		}
-	};
-	
-	this.processClientCmd = function(cmd, cmdModule) {
-		var parsedCmd = cmd.split(" ");
-		var command = parsedCmd[1];
-		var cmdValue = parsedCmd[2];
-		var validCommands = ["wsurl", "help"];
-		
-		if (validCommands.indexOf(command) != -1) {
-			if(command == validCommands[0]) {
-				portal.updateCommLink(cmdValue, portal);
-			} else if (command == validCommands[1]) {
-				var commandString = "";
-				var i=0;
-				while (validCommands[i]) {
-					commandString = validCommands[i] + "  " + commandString;
-					i++;
-				}
-				cmdModule.updateResponse("Please use one of the following client commands: " + commandString, cmdModule);
-			}
-		} else {
-			cmdModule.updateResponse("Not a valid client command.  Type \"/client help\" to see a list of available commands.", cmdModule);
-		}
-	}
-	
-	this.updateResponse = function(response, cmdModule) {
-		cmdModule.responses.push(response);
-		var rResponses = cmdModule.responses.slice(0);
-		rResponses.reverse();
-		var responseHTML = "";
-		
-		var i = 0;
-		while (rResponses[i]) {
-			responseHTML = responseHTML + "<div class='line'>" + rResponses[i] + "</div>";
-			i++;
-		}
-		
-		$("#cmdResponse").html(responseHTML);
-		
-		if (cmdModule.responses.length >= cmdModule.responsesLimit) {
-			cmdModule.responses.splice(0,1);
-		}
-	}
-	
-	this.init = function(cmdModule) {
+	this.init = function() {
+		this.skeleton = "<div id='cmd'><form id='cmdForm'><input type='text' id='cmdLine'><input type='submit' value='Send'></form></div>";
 		$("body").prepend(this.skeleton);
 		$("#cmd").width($("#portal").width());
 		$(document).keypress(function(event) {
@@ -197,21 +131,35 @@ function CmdModule(portal) {
                 return false;
             }
         });
-        $("#cmdForm").submit(function(e) {
-			e.preventDefault();
-			//portal.getCommLink().send($("#cmdLine").val());
-			cmdModule.processCmd($("#cmdLine").val(), cmdModule);
+        $("#cmdForm").submit(function() {
+            ws.send($("#cmdLine").val());
             $("#cmdLine").val("");
             return false;
         });
 	}
 	
-	this.init(this);
+	this.init();
 }
 
 function CommLink(portal) {
-	this.url = "ws://aether.xilabs.net:9002";
-	this.ws;
+	this.ws = new WebSocket("ws://aether.xilabs.net:9002");
+	this.ws.binaryType="arraybuffer";
+	var happy = this;
+	
+	this.ws.onmessage = function(e) {
+		   
+		var objects = happy.process_aether_data(e.data, happy);
+		if (e.data)
+			
+		for(var n=0; n<objects.length; n++) {
+			if (n < u.moxels.length) {
+				u.moxels[n].position = objects[n];
+			} else {
+				u.createMoxel(objects[n], 5);
+				portal.populateView(n);	
+			}
+		}
+	}
 
 	this.from_arraybuffer = function(buff){
   
@@ -256,47 +204,10 @@ function CommLink(portal) {
 		return objects;
 	};
 	
-	this.sendMessage = function(message, commLink) {
-		commLink.ws.send(message);
-	};
-	
-	this.init = function(commLink) {
+	this.init = function() {
 		
-		if (commLink.ws) {
-			commLink.ws.close();
-			//commLink.ws = null;
-		}
-		commLink.ws = new WebSocket(commLink.url);
-		commLink.ws.binaryType="arraybuffer";
-		var happy = commLink;
-		
-		commLink.ws.onmessage = function(e) {
-			//console.log();
-			if (typeof e.data == "string") {
-				portal.cmd.updateResponse(e.data, portal.cmd);
-			} else {
-				var objects = happy.process_aether_data(e.data, happy);
-				
-				if (e.data)
-				
-				if(u.moxels.length > objects.length) {
-					
-					//u.moxels.splice(0);
-					
-				}
-				
-				for(var n=0; n<objects.length; n++) {
-					if (n < u.moxels.length) {
-						u.moxels[n].position = objects[n];
-					} else {
-						u.createMoxel(objects[n], 5);
-						portal.populateView(n);	
-					}
-				}
-			}
-		}
 	};
         
 	
-	this.init(this);
+	this.init();
 }
