@@ -117,10 +117,10 @@ function View() {
 }
 
 function CmdModule(portal) {
-	this.skeleton = "<div id='cmd'><form id='cmdForm'><input type='text' id='cmdLine'><input type='submit' value='Send'></form><div id='cmdResponse'></div></div>";
+	this.skeleton = "<div id='cmd'><form id='cmdForm'><input type='text' id='cmdLine' autocomplete='off'></form><div id='cmdResponse'></div></div>";
 	this.cmdActive = false;
 	this.responses = new Array();
-	this.responsesLimit = 3;
+	this.responsesLimit = 20;
 	this.portal = portal;
 	
 	this.processCmd = function(cmd, cmdModule) {
@@ -184,6 +184,7 @@ function CmdModule(portal) {
 	this.init = function(cmdModule) {
 		$("body").prepend(this.skeleton);
 		$("#cmd").width($("#portal").width());
+		$("#cmdLine").width($("#portal").width() - 9);
 		$(document).keypress(function(event) {
             if (event.which == 96) {
                 if (!this.cmdActive) {
@@ -200,7 +201,9 @@ function CmdModule(portal) {
         $("#cmdForm").submit(function(e) {
 			e.preventDefault();
 			//portal.getCommLink().send($("#cmdLine").val());
-			cmdModule.processCmd($("#cmdLine").val(), cmdModule);
+			if ($("#cmdLine").val() != "") {
+				cmdModule.processCmd($("#cmdLine").val(), cmdModule);
+			}
             $("#cmdLine").val("");
             return false;
         });
