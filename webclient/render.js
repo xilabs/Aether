@@ -16,6 +16,7 @@ function Portal(universe) {
     this.camera.position.z = 50;
     this.happy;
     this.projector = new THREE.Projector();
+	this.objectStat = new ObjectStatModule(this);
     this.PI2 = Math.PI * 2;
     this.particleMaterial = new THREE.SpriteCanvasMaterial( {
         color: 0x000000,
@@ -71,7 +72,7 @@ function Portal(universe) {
        
     };
     
-    this.onPortalClick = function(event) {
+    this.onPortalClick = function(event, portal) {
         
         var offset = $("#portal").offset();
         var relX = event.clientX - offset.left;
@@ -91,6 +92,7 @@ function Portal(universe) {
         if ( intersects.length > 0 ) {
 
             intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+			portal.objectStat.displayObjectStats();
 
         }
     };
@@ -104,7 +106,7 @@ function Portal(universe) {
 	this.init = function(portal) {
 	
 		$("#portal").click(function() {
-			portal.onPortalClick(event);
+			portal.onPortalClick(event, portal);
 		});
 		
 	};
@@ -300,6 +302,25 @@ function CommLink(portal) {
 		}
 	};
         
+	
+	this.init(this);
+}
+
+function ObjectStatModule(portal) {
+	this.portal = portal;
+	this.id = "objectStatModule";
+	this.stats = [{"object": ""}, {"position": ""}];
+	
+	
+	this.displayObjectStats = function() {
+	
+	};
+	
+	this.init = function(objectStatModule) {
+		var portalHeight = $(objectStatModule.portal.canvas).height();
+		$("body").append("<div id='" + objectStatModule.id + "'><div>");
+		$("#" + objectStatModule.id).css({"background": "rgba(3,3,3,.4)", "position": "absolute", "top": portalHeight - 142 + "px", "height": "150px", "width": "150px", "float": "right"});
+	};
 	
 	this.init(this);
 }
