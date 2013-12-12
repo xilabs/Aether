@@ -40,7 +40,7 @@ Universe::Universe() {
 		voxel->add_moxel(m);
 
 		// Give it a random velocity
-		m->velocity=Vector3f(0.01*die(),0.01*die(),0.01*die());
+		m->velocity=Vector3f(0.1*die(),0.1*die(),0.1*die());
 
 	}
 

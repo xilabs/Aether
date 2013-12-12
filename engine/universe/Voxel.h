@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Eigen/Dense"
+#include "Eigen/Geometry"
 #include <boost/shared_ptr.hpp>
 #include <deque>
 #include <vector>
+#include <cmath>
 #include <boost/thread/mutex.hpp>
 #include "Moxel.h"
 #include "MoxelManager.h"
@@ -18,11 +20,8 @@ class Voxel {
 
 public:
 
-	Voxel (Vector3f position) {
-
-		this->position=position;
-
-	};
+	Voxel (Vector3f position);
+	~Voxel();
 
 	void add_moxel(shared_ptr<Moxel> m){
 
@@ -70,11 +69,11 @@ public:
 */
 	deque<shared_ptr<Moxel> > moxels;		
 	mutex guard;
+	static const double half_size;
 
 private:
-
+	AlignedBox3f *box;
 	MoxelManager moxel_manager;
-	Vector3f position;
-	Vector3f velocity;
 
 };
+
