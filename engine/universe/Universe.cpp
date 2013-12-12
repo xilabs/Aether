@@ -11,6 +11,7 @@ Universe::Universe() {
 
 
 	// Create 3 moxels, and add them to the Voxel
+/*
 	shared_ptr<Moxel> m1=shared_ptr<Moxel>(new Moxel(Vector3f(10,0,0)));
 	shared_ptr<Moxel> m2=shared_ptr<Moxel>(new Moxel(Vector3f(0,10,0)));
 	shared_ptr<Moxel> m3=shared_ptr<Moxel>(new Moxel(Vector3f(0,0,10)));
@@ -26,7 +27,7 @@ Universe::Universe() {
 	m2->bind(m3);
 	m3->bind(m2);
 
-
+*/
 	// Now generate 97 more random moxels
 
 	boost::mt19937 rng;
@@ -34,8 +35,12 @@ Universe::Universe() {
 	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > die(rng, dist);
 	for (int n=0; n<97; n++){
 
+		// Create a moxel
 		shared_ptr<Moxel> m=shared_ptr<Moxel>(new Moxel(Vector3f(die(),die(),die())));
 		voxel->add_moxel(m);
+
+		// Give it a random velocity
+		m->velocity=Vector3f(0.01*die(),0.01*die(),0.01*die());
 
 	}
 
@@ -75,27 +80,29 @@ void Universe::manage(){
 			// Snooze a little
 			boost::this_thread::sleep(boost::posix_time::milliseconds(10));
 
+			this->voxel->animate(0.010);
+
 			// Move some moxels
-			t+=.01;
-			if(t>2*PI){
+			// t+=.01;
+			// if(t>2*PI){
 	
-				t=0;
-			}
+			// 	t=0;
+			// }
 
-			{ // Scope for lock 
-				mutex::scoped_lock lock(this->voxel->guard);
-				// for(deque<shared_ptr<Moxel> >::iterator it=voxel->moxels.begin(); it!=voxel->moxels.end(); ++it){	
+			// { // Scope for lock 
+			// 	mutex::scoped_lock lock(this->voxel->guard);
+			// 	// for(deque<shared_ptr<Moxel> >::iterator it=voxel->moxels.begin(); it!=voxel->moxels.end(); ++it){	
 
-				// 	//double x=(*it)->position(0);
-				// }				
-				shared_ptr<Moxel> m1=this->voxel->moxels.at(0);
-				shared_ptr<Moxel> m2=this->voxel->moxels.at(1);
-				shared_ptr<Moxel> m3=this->voxel->moxels.at(2);
+			// 	// 	//double x=(*it)->position(0);
+			// 	// }				
+			// 	shared_ptr<Moxel> m1=this->voxel->moxels.at(0);
+			// 	shared_ptr<Moxel> m2=this->voxel->moxels.at(1);
+			// 	shared_ptr<Moxel> m3=this->voxel->moxels.at(2);
 
-				m1->position(0)=10*sin(t);
-				m2->position(1)=10*sin(t+1);
-				m3->position(2)=10*sin(t+2);
-			}
+			// 	m1->position(0)=10*sin(t);
+			// 	m2->position(1)=10*sin(t+1);
+			// 	m3->position(2)=10*sin(t+2);
+			// }
 
 
 
