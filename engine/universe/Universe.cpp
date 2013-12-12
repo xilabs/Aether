@@ -71,7 +71,7 @@ void Universe::stop(){
  */
 void Universe::manage(){
 
-	static float t=0;
+	static float t=0;	// Global time counter
 
 	while(*this->manager_run) {
 
@@ -79,7 +79,7 @@ void Universe::manage(){
 
 			// Snooze a little
 			boost::this_thread::sleep(boost::posix_time::milliseconds(10));
-
+			t+=0.010;
 			this->voxel->animate(0.010);
 
 			// Move some moxels
