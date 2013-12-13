@@ -1,4 +1,4 @@
-GEN_SRC := universe/Universe.cpp universe/Voxel.cpp aether.cpp inih/ini.c inih/cpp/INIReader.cpp 
+GEN_SRC := universe/Universe.cpp universe/Voxel.cpp universe/Box.cpp aether.cpp inih/ini.c inih/cpp/INIReader.cpp 
 GEN_OBJ := $(patsubst %.cpp,%.o, $(GEN_SRC))
 
 INC := -IEigen/ -Iclasses/ -Iinih/cpp/ -Iservices/websocketpp/

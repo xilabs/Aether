@@ -2,17 +2,17 @@
 #include "Voxel.h"
 using namespace Eigen;
 
-const double Voxel::half_size=200.0d;
+const double Voxel::half_size=100.0d;
 
 
 Voxel::Voxel (Vector3f position) {
 
 	// Get box corners
-	Vector3f v2(half_size, half_size, half_size);
-	Vector3f v1(-half_size, -half_size, -half_size);
+	// Vector3f v2(half_size, half_size, half_size);
+	// Vector3f v1(-half_size, -half_size, -half_size);
 
-	this->box= new AlignedBox3f(v1, v2);
-
+//	this->box= new AlignedBox3f(v1, v2);
+	this->box=new Box(half_size);
 };
 
 Voxel::~Voxel () {
@@ -34,14 +34,15 @@ void Voxel::animate(double delta_t) {
 			m->position+=(delta_t * m->velocity);
 
 			// Is the moxel outside the bounding box?
-			if(double protrusion=this->box->squaredExteriorDistance(m->position)){
+			if(!this->box->contains(m->position)){
 
 				// Bounce off the wall
-				m->velocity*=-1;
+//				m->velocity*=-1;
 
 				// Move to inside the box
-				double length=m->position.norm();
-				m->position*=0; //*=(length/(length-sqrt(protrusion)));
+//				double length=m->position.norm();
+//				m->position*=0; //*=(length/(length-sqrt(protrusion)));
+				this->box->bounce(m);
 
 			}
 

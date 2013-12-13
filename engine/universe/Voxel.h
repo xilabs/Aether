@@ -9,6 +9,7 @@
 #include <boost/thread/mutex.hpp>
 #include "Moxel.h"
 #include "MoxelManager.h"
+#include "Box.h"
 //#include "../gen-cpp/Aether.h"			// Should not be here!!!!! We should be ignorant of this!
 using namespace std;
 using namespace Eigen;
@@ -72,7 +73,7 @@ public:
 	static const double half_size;
 
 private:
-	AlignedBox3f *box;
+	Box* box;
 	MoxelManager moxel_manager;
 
 };
