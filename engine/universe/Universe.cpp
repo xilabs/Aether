@@ -31,7 +31,7 @@ Universe::Universe() {
 	// Now generate 97 more random moxels
 
 	boost::mt19937 rng;
-	boost::uniform_int<> dist(-200,200);
+	boost::uniform_int<> dist(-100,100);
 	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > die(rng, dist);
 	for (int n=0; n<97; n++){
 

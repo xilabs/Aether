@@ -41,7 +41,7 @@ void Voxel::animate(double delta_t) {
 
 				// Move to inside the box
 				double length=m->position.norm();
-				m->position*=(length/(length-sqrt(protrusion)));
+				m->position*=0; //*=(length/(length-sqrt(protrusion)));
 
 			}
 
